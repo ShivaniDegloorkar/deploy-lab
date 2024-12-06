@@ -1,0 +1,35 @@
+name: test-k8s-permissions
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-permissions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up kubeconfig
+        uses: azure/k8s-set-context@v4
+        with:
+          method: service-account
+          k8s-url: https://18.117.190.232     # Replace this IP address with the results of curl http://checkip.amazonaws.com
+          k8s-secret: | # Replace the example secret below with the secret from your cluster; it should be indented by 12 spaces
+            apiVersion: v1
+            data:
+              ca.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCVENDQWUyZ0F3SUJBZ0lJQ2U5MDQ1UlpUcHN3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TkRFeU1EWXhOak14TXpOYUZ3MHpOREV5TURReE5qTTJNek5hTUJVeApFekFSQmdOVkJBTVRDbXQxWW1WeWJtVjBaWE13Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLCkFvSUJBUUN4aGR0V2pvTnowWDNXa3pXdlFnOGpxU3JqNzUvNnljSFBtTk1TSCtnVlJldGw0d0N5L0RaVU5hOXkKalJnQzhkQXhJa3pBeXlTemhEeGF2QXowU3FZb2N3VDlYZWtwWmJ0T2tVSGtUQWdHMklDMituWDZlVU9TQ0dCSwpZN1FjZzFSNDJSMk13dEZFMDlwRnRDTVRBQ2pmdTBTRGtEcE9FdjNZaVc1YVNWdzYwc2ZxODFBUk0wU29SbUFaCjV4UlhzcnJ5VDRvekQwMUNXR3BKL09aazRvSXo1S0E0RnVaTG4rYzZCeWx2R2NkT1JLc3BoSlE5ejJDZlFWbGYKaCtBdEhQbk5BcWNnU241TTNablJLeHAxTHZYTGh2Y0hXSE5rem1YMGRobnk2cEYwMXhvK29FWWRRWktudXhsSQo3WHJOM3VFWktjSHJQY1oxdC9xc3cyUUg2YzBiQWdNQkFBR2pXVEJYTUE0R0ExVWREd0VCL3dRRUF3SUNwREFQCkJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJUTk94TUxqUXNxR2xsMnFoUkZnQXpCeXJJQU9UQVYKQmdOVkhSRUVEakFNZ2dwcmRXSmxjbTVsZEdWek1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQ2NBNTBkTVEwZQp3T3BaVWU0cWJJVkQ2SlVsMy94dERMV3VqVURJSmdJeWQ0RVorcDlmSTZQaURXeHRtMGZrWEpNd0JXRnlSa0NyCkZQOFJsRXNvaXlhTkkwTnpVdm1vdzA1R3RXaDhHNVBIR2FjVVd4Y2tvcWhicGJ3bll2VEZLbFlIVlhqdVBvV0kKQWFZR25WSitMdTdpYzVXY1Q3SjJySXVGVGF0SFhxMDU3N3lnTE02MzZ4N0tQQlE2SnFPVnVIMDNlbGFXeGhnTQpkNzJka1o2ZWpmaFNnSWxIcXY2QjFTVEZTU2xQYWRDV3NFYTdpOGkwbk00VVYwS0g4a2szalczZGxOYS9Ud1VCCjBuY0JPV3pUeWJnQlgyZCtuNHJLU1A0eEtWWGo5Z2s3YnF0L0svTWxjRW1zTXVLRlB0ZVF6UzE1QjhqcWVBYzYKUVVtOVNaSGFQQ2Q2Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+              namespace: ZGVmYXVsdA==
+              token: ZXlKaGJHY2lPaUpTVXpJMU5pSXNJbXRwWkNJNklsQmtNRTVDT0doaldVWlFibXM1VTJaRlowcDRkMjlWVGxKRlRUWjRiM0JaY21odVkyTlphVFZ1UkZFaWZRLmV5SnBjM01pT2lKcmRXSmxjbTVsZEdWekwzTmxjblpwWTJWaFkyTnZkVzUwSWl3aWEzVmlaWEp1WlhSbGN5NXBieTl6WlhKMmFXTmxZV05qYjNWdWRDOXVZVzFsYzNCaFkyVWlPaUprWldaaGRXeDBJaXdpYTNWaVpYSnVaWFJsY3k1cGJ5OXpaWEoyYVdObFlXTmpiM1Z1ZEM5elpXTnlaWFF1Ym1GdFpTSTZJbWRvWVMxellTMXpaV055WlhRaUxDSnJkV0psY201bGRHVnpMbWx2TDNObGNuWnBZMlZoWTJOdmRXNTBMM05sY25acFkyVXRZV05qYjNWdWRDNXVZVzFsSWpvaVoyaGhJaXdpYTNWaVpYSnVaWFJsY3k1cGJ5OXpaWEoyYVdObFlXTmpiM1Z1ZEM5elpYSjJhV05sTFdGalkyOTFiblF1ZFdsa0lqb2lPRFEyT1Roa1l6Y3RaV0l6WkMwME9EZGlMV0l3TmpjdFlqRTBOalV3TUdOak5UbGlJaXdpYzNWaUlqb2ljM2x6ZEdWdE9uTmxjblpwWTJWaFkyTnZkVzUwT21SbFptRjFiSFE2WjJoaEluMC4wakkxVktqbDI1ZE9kNDV1dTZxRkQ3RTIwNWtaSkY0UmNhRFk0aS1HbzY4TEJRY1NjTElLTENEeVZpQjRIZENNQ0YzLU8xdlF5aFZHTVNEQlplbS1VR0lGVGp0c3lFWDVsTUYtYl8tQWZSNFZaSUZadUlVWG1YYUxtMjdzOVNfX1lZTkdBcGVaOTBSODc4aHlHZTdPd21rdmF4MmFYQjNKRFAzSkpaZW9PdlEyTm1hTVFDZWhhQ3MwZ29LLTFOd2FYT1VCdEN0dnFuV2Rndll5Y1M0WGlaNUYtS2M3QVNkblFERXVISm4wR2tUTmpfY3pBSVVuSy1rd1B6QzNsTnU4QkhuM0xiVUNBQTdkNzJqYVBhWDRkMzRRUWF4TUZ1N2VEYXpYSHpEcHBiczNLazl2bWtacTNMOUoxUWFhM0JnOXdDQmdBdlpVYkh5Q2h5bTdfcDdfQXc=
+            kind: Secret
+            metadata:
+              annotations:
+                kubectl.kubernetes.io/last-applied-configuration: |
+                  {"apiVersion":"v1","kind":"Secret","metadata":{"annotations":{"kubernetes.io/service-account.name":"gha"},"name":"gha-sa-secret","namespace":"default"},"type":"kubernetes.io/service-account-token"}
+                kubernetes.io/service-account.name: gha
+                kubernetes.io/service-account.uid: 84698dc7-eb3d-487b-b067-b146500cc59b
+              creationTimestamp: "2024-12-06T16:38:20Z"
+              name: gha-sa-secret
+              namespace: default
+              resourceVersion: "699"
+              uid: 89d70c82-f51e-4c7e-8daf-d0f15dfa1a04
+            type: kubernetes.io/service-account-token
+      - name: Get pods
+        run: kubectl get pods -n default
