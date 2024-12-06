@@ -1,7 +1,7 @@
 name: test-k8s-permissions
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: {}
 
 jobs:
   test-permissions:
